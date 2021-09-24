@@ -1,0 +1,3 @@
+{
+  "users": "CREATE TABLE `users` (\n  `id`\t\tint(11) NOT NULL,\n  `name`\tvarchar(50) NOT NULL,\n  `age`\t\tint(11) DEFAULT NULL,\n  PRIMARY KEY (`id`)\n)\n"
+}

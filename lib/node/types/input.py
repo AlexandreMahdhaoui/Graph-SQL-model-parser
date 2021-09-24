@@ -1,6 +1,6 @@
-from lib.node.types.node_type import NodeType
+from lib.node.node_type import NodeType
 
 
-class InputType(NodeType):
+class Input(NodeType):
     pass
 

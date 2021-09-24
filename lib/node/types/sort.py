@@ -1,6 +1,6 @@
-from lib.node.types.node_type import NodeType
+from lib.node.node_type import NodeType
 
 
-class SortType(NodeType):
+class Sort(NodeType):
     pass
 

@@ -1,6 +1,6 @@
-from lib.node.types.node_type import NodeType
+from lib.node.node_type import NodeType
 
 
-class OutputType(NodeType):
+class Output(NodeType):
     pass
 

@@ -1,13 +1,14 @@
-from typing import Union
+from typing import Union, List
 
 
 class SelectParser:
+    FieldsType = Union[List[str], str]
     t = "`{}`"
     nt = t + ","
     kw = ["SELECT", "FROM"]
 
     @classmethod
-    def parse(cls, fields: Union[list, str], origin: str):
+    def parse(cls, fields: FieldsType, origin: str):
         return " ".join([
             cls.kw[0],
             cls._parse_fields(fields),
@@ -15,9 +16,9 @@ class SelectParser:
             cls.t.format(origin)])
 
     @classmethod
-    def _parse_fields(cls, fields: Union[list, str]):
+    def _parse_fields(cls, fields: FieldsType):
         if fields == '*':
             return fields
         if isinstance(fields, list):
             return " ".join([cls.nt.format(x) for x in fields[:-1]]) + " " + cls.t.format(fields[-1])
-        raise TypeError('Type of fields must be list or str equal to \'*\'')
+        raise TypeError('Type of fields must be of type \'list\' or type \'str\' and \'fields\' == \'*\'')
