@@ -1,0 +1,2 @@
+class EdgeParser:
+    pass
