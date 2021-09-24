@@ -21,10 +21,10 @@ class NodeType(ABC):
     def parse(cls, origin_node: str, origin_schema: SchemaType, *args, **kwargs) -> tuple[str, Union[dict, Any]]:
         """
         Method called by NodeParser to parse a specific type of node.\n
-        Specific types manipulating the SELECT attributes. (e.g.: TextTransformation)
-            - Replace `cls.parse()`\n
-            - Use `cls._parse()` to get the proper `SELECT x FROM y OTHER z` block\n
-            - Use `cls._select()` to get only the `SELECT x FROM y` block\n
+        Specific node_types manipulating the SELECT attributes of SQL queries (e.g.: TextTransformation) have different
+        way to implement their transformations by replacing this `cls.parse()` method.
+            - Use `cls._select()` to get the proper `SELECT x FROM y` block\n
+            - Use `cls._parse()` to get the whole `SELECT x FROM y OTHER z` block\n
             Example:\n
             class TextTransformation(NodeType):
                 template = '{}({}) as {}'\n

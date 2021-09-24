@@ -1,4 +1,3 @@
-from lib.edge.edge_parser import EdgeParser
 from lib.schema.schema import Schema
 
 
@@ -17,11 +16,7 @@ class NodeParser:
     @classmethod
     def parse(cls, nodes, edges):
         """
-        Before everything compute the INPUT NODES
-
-        for e in edges:
-            e['from'] -> origin
-            e['to'] -> current
+        
         :param nodes:
         :param edges:
         :return:
@@ -31,8 +26,8 @@ class NodeParser:
         schemas = dict()
         parsed = list()
 
-        schemas, parsed = cls._parse_inputs(input_keys, nodes, schemas, parsed)
-        schemas, parsed = cls._parse_edged_nodes(edges, nodes, schemas, parsed)
+        schemas, parsed = cls._compute_inputs(input_keys, nodes, schemas, parsed)
+        schemas, parsed = cls._compute_edged_nodes(edges, nodes, schemas, parsed)
 
         return cls._join(parsed)
 
@@ -57,7 +52,13 @@ class NodeParser:
                                          is_output=is_output))
 
     @classmethod
-    def _parse_inputs(cls, input_keys: list, nodes: dict, schemas: dict, parsed: list):
+    def _compute_inputs(
+            cls,
+            input_keys: list,
+            nodes: dict,
+            schemas: dict,
+            parsed: list
+    ):
         schemas, parsed = schemas.copy(), parsed.copy()
         for k in input_keys:
             node_dict = nodes.get(k)
@@ -73,7 +74,13 @@ class NodeParser:
         return schemas, parsed
 
     @classmethod
-    def _parse_edged_nodes(cls, edges: list, nodes: dict, schemas: dict, parsed: list):
+    def _compute_edged_nodes(
+            cls,
+            edges: list,
+            nodes: dict,
+            schemas: dict,
+            parsed: list
+    ):
         schemas, parsed = schemas.copy(), parsed.copy()
         len_ = (len(edges) - 1)
         for i, e in enumerate(edges):
