@@ -7,12 +7,9 @@ Sharing knowledge is a mindset I truly cherish and my work at your company
 will always be documented and oriented to my coworkers.\
 I'm a team player!
 
-NB: From `nodes` and `edges` graph theory's keywords, I've guessed the 
-task might be part of a Graph Query backend engine.
-I designed this API to integrate a whole graph query environment.
-
 
 ## Architecture decision: 
+- ### Node parsing flow:
 - ### Node types and Validation: 
   - Each columns get validated within a `node` according to the 
   `node_type` specification
@@ -27,21 +24,30 @@ I designed this API to integrate a whole graph query environment.
     cased `text_transformation` refers to the pascal cased `TextTransformation`.
       (Please respect snake and pascal casing when dealing with `node_types`).
 - ### Fields, Schemas and Validation:
-  - The API access schema definitions through
-  a subscriptable class provider.
-  - Then schemas gets parsed to create validator. I designed the validation
-  flow to be extendable.
+  - The API access schema definitions through a `subscriptable class` provider.
+  - SQL schema definitions get parsed and thus are ready for validation.
+  - `class SchemaValidator` and `class TypingValidator` are helper class used
+  during `node parsing` to ensure 
+  - During `node parsing`, a schema of the current outputed data structure
+  gets computed and will be used to validate further parsing stages.
   - Extendability: this API allows adding and removing schemas `LibApi.add_schema()`
   and `LibApi.remove_schema()`
     - It also allows extendability to retrieve schema definition from database
     directly. At the moment, schemas are retrieved from a `.json` file.
-- Bonus Point: 'Suggestion on how to validate the columns used inside the nodes'
+- ### Bonus Point: 'Suggestion on how to validate the columns used inside the nodes'
+  - More than a suggestion I took the initiative to code a validation 
+  flow for columns
 
 
-## ** ATTENTION **
-Please do not publicly fork this repository.
+NB: From `nodes` and `edges` graph theory's keywords, I've guessed the 
+task might be part of a Graph Query backend engine.
+I designed this API to be integrable in a whole graph query environment.
 
-# Task
+___
+
+#### ** ATTENTION ** Please do not publicly fork this repository.
+
+### Task
 
 - Parse `request-data.json` into the query similar to `result.sql`. 
 
@@ -59,7 +65,7 @@ Graphical representation of actual use-case:
 
 Use your imagination to fill in the missing information however you like to achieve the result.
 
-# Bonus Points
+### Bonus Points
  - Optimize `request-data.json` json structure/schema.
  - Extendable structure which allows to add more types easily in the future.
  - Suggestion on how to validate the columns used inside the nodes.

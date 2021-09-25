@@ -47,6 +47,13 @@ class NodeType(ABC):
         return cls._parse(origin_node, schema, *args, **kwargs), schema
 
     @classmethod
+    def validate(cls, schema: SchemaType, field_name: str, allowed_types: List[str]):
+        if not schema.get(field_name) in allowed_types:
+            raise TypeError('Type of field `{}` must be of type `{}` but type `{}` was given.'
+                            .format(field_name, allowed_types, schema.get(field_name)),
+                            'From schema: {}'.format(schema))
+
+    @classmethod
     def _compute_schema(cls, origin_schema, fields=None):
         """
         returns selected fields from origin schema, otherwise origin_schema if no fields have been specified
