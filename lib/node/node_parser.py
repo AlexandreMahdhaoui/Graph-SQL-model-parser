@@ -1,3 +1,4 @@
+from lib.node.node_type import NodeType
 from lib.schema.schema import Schema
 
 
@@ -18,7 +19,8 @@ def _get_types() -> dict:
                  for x in os.scandir(os.path.join('lib', 'node', 'types'))
                  if not x.name.startswith('_')]
     for t in type_list:
-        type_dict[t] = importlib.import_module('lib.node.types.{}'.format(t)).__dict__.get('{}'.format(sc.snake_to_pascal(t)))
+        type_dict[t] = importlib.import_module('lib.node.types.{}'.format(t)).__dict__.get(
+            '{}'.format(sc.snake_to_pascal(t)))
     return type_dict
 
 
@@ -55,10 +57,11 @@ class NodeParser:
             is_output=False
     ):
         node_type = node_dict.get('type')
-        node_class = cls.type_dict.get(node_type)
-        schema, parsed = node_class.parsed(origin_node=origin_node,
-                                           origin_schema=origin_schema,
-                                           **node_dict)
+        node_class: NodeType = cls.type_dict.get(node_type.lower())
+
+        schema, parsed = node_class.parse(origin_node=origin_node,
+                                          origin_schema=origin_schema,
+                                          **node_dict)
         return (schema, cls._format_node(current_node=current_node,
                                          parsed=parsed,
                                          is_input=is_input,
@@ -118,9 +121,9 @@ class NodeParser:
             is_output=False
     ):
         if is_input:
-            "WITH {} as ({})".format(current_node, parsed)
+            return "WITH {} as ({})".format(current_node, parsed)
         if is_output:
-            return "{} as ({})\n SELECT * FROM {};".format(current_node, parsed, current_node)
+            return "{} as ({})\nSELECT * FROM {};".format(current_node, parsed, current_node)
         return "{} as ({})".format(current_node, parsed)
 
     @classmethod

@@ -40,7 +40,7 @@ class NodeType(ABC):
     context_0: str = 'NodeType'
 
     @classmethod
-    def parse(cls, origin_node: str, origin_schema: SchemaType, *args, **kwargs) -> tuple[str, Union[dict, Any]]:
+    def parse(cls, origin_node: str, origin_schema: SchemaType, *args, **kwargs) -> tuple[SchemaType, str]:
         """
         Method called by NodeParser to parse a specific type of node.\n
         Specific node_types manipulating the SELECT attributes of SQL queries (e.g.: TextTransformation) have different
@@ -63,7 +63,7 @@ class NodeType(ABC):
                                 cls.validate(origin_schema, c, cls.allowed_types) \n
                                 str_ = re.sub(c, cls.template.format([t, c, c]), str_)
                     schema = cls._compute_schema(origin_schema, fields=kwargs.get('fields')) \n
-                    return str_, schema
+                    return schema, str_
         :param origin_schema: Dict[str, Union[List[str], str]]
         :param origin_node: str
         :param args:
@@ -71,7 +71,7 @@ class NodeType(ABC):
         :return: Whole parsed node type
         """
         schema = cls._compute_schema(origin_schema, fields=kwargs.get('fields'))
-        return cls._parse(origin_node, schema, *args, **kwargs), schema
+        return schema, cls._parse(origin_node, schema, *args, **kwargs)
 
     @classmethod
     def validate(cls, schema: SchemaType, field_name: str, allowed_types: list = None, context: str = None):
@@ -107,7 +107,7 @@ class NodeType(ABC):
     @classmethod
     def _parse(cls, origin_node: str, schema: SchemaType, *args, **kwargs) -> str:
         fields = [k for k in schema.keys()]
-        return cls._join((cls._select(origin_node, fields), cls._resolve(__schema__=schema, *args, **kwargs)))
+        return cls._join((cls._select(origin_node, fields), cls._resolve(__origin_schema__=schema, *args, **kwargs)))
 
     @classmethod
     def _select(cls, origin: str, fields: Union[List[str], str]):
@@ -120,10 +120,10 @@ class NodeType(ABC):
         return " ".join(tuple_)
 
     @classmethod
-    def _resolve(cls, __schema__, *args, **kwargs):
+    def _resolve(cls, __origin_schema__, *args, **kwargs):
         transform_object = kwargs.get('transformObject')
         cls._check_transform_object(transform_object)
-        return cls.resolve(transform_object=transform_object, __schema__=__schema__, *args, **kwargs)
+        return cls.resolve(transform_object=transform_object, __origin_schema__=__origin_schema__, *args, **kwargs)
 
     @classmethod
     def resolve(cls, transform_object, __origin_schema__, *args, **kwargs) -> str:

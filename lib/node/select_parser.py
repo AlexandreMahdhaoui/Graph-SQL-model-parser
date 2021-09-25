@@ -19,6 +19,6 @@ class SelectParser:
     def _parse_fields(cls, fields: FieldsType):
         if fields == '*':
             return fields
-        if isinstance(fields, list):
-            return " ".join([cls.nt.format(x) for x in fields[:-1]]) + " " + cls.t.format(fields[-1])
-        raise TypeError('Type of fields must be of type \'list\' or type \'str\' and \'fields\' == \'*\'')
+        if not isinstance(fields, list):
+            raise TypeError('Type of fields must be of type \'list\' or type \'str\' and \'fields\' == \'*\'')
+        return " ".join([cls.nt.format(x) for x in fields[:-1]]) + " " + cls.t.format(fields[-1])

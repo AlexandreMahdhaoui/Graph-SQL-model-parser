@@ -15,7 +15,7 @@ class Output(NodeType):
         str_list = list()
         for k, v in transform_object.items():
             cls._validate_items(k, v)
-            str_list.extend([k, v])
+            str_list.extend([k, repr(v)])
         return ' '.join(str_list)
 
     @classmethod
