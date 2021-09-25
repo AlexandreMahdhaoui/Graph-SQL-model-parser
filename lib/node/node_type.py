@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Union, List, Tuple, Dict, Any
+from typing import Union, List, Tuple, Dict
 
 from lib.node.select_parser import SelectParser
 

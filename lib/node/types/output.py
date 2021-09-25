@@ -1,4 +1,7 @@
+from typing import Union, List
+
 from lib.node.node_type import NodeType
+from lib.node.select_parser import SelectParser
 
 
 class Output(NodeType):
@@ -17,6 +20,10 @@ class Output(NodeType):
             cls._validate_items(k, v)
             str_list.extend([k, repr(v)])
         return ' '.join(str_list)
+
+    @classmethod
+    def _select(cls, origin: str, fields: Union[List[str], str]):
+        return SelectParser.parse(origin, fields='*')
 
     @classmethod
     def _validate_items(cls, keyword, value):
