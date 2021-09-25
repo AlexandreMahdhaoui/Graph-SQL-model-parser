@@ -33,7 +33,7 @@ I'm a team player!
     - Please make sure to provide the same name for the class and its file !\
     E.g.: `class TextTransformation(NodeType)` defined in 
     `text_transformation.py`.
-    - Note that `_get_types()` will understand the snake cased file
+    - Note that `_get_types()` will understand that a snake cased file
     `text_transformation` refers to the pascal cased class `TextTransformation`.
       (Please respect snake and pascal casing when dealing with `node_types`).
 - ### Fields, Schemas and Validation:
@@ -78,6 +78,7 @@ I'm a team player!
     - `len(var_fields)` will be equal to `len(operations)`. For each
     element of `var_fields`, we will apply the corresponding operation
     described in `operations`.
+
 
 NB: From `nodes` and `edges` graph theory's keywords, I've guessed the 
 task might be part of a Graph Query backend engine.

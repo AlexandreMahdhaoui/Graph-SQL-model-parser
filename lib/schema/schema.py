@@ -1,20 +1,21 @@
 import json
+import os
 import re
 from typing import Tuple
 
 from lib.utils.singleton import Singleton
-from lib.utils.subscriptable import Subscriptable
 
 
-class Schema(Subscriptable, metaclass=Singleton):
+class Schema(metaclass=Singleton):
     _pattern = '(?<=({})).+?(?={})'
 
     def __init__(self):
         self._get_typing_ref()
-        with open('/lib/data/schema_definitions.json') as f:
+        with open(os.path.join('lib', 'data', 'schema_definitions.json')) as f:
             data = json.load(f)
         for k, v in data.items():
             self.__setattr__(k, self._parse_schema(v))
+        print(self._dict())
 
     def get_table_name(self, schema) -> str:
         pattern = self._pattern.format('CREATE TABLE `', '`')
@@ -56,6 +57,18 @@ class Schema(Subscriptable, metaclass=Singleton):
         return match.group().strip() if match else None
 
     def _get_typing_ref(self):
-        with open('/lib/data/typing_ref.json') as f:
+        with open(os.path.join('lib', 'data', 'typing_ref.json')) as f:
             data = json.load(f)
         self._typing_ref = data
+
+    def __getitem__(self, item: str):
+        return self._dict()[item]
+
+    def get(self, item: str, default=None):
+        return self._dict().get(item, default=default)
+
+    def _dict(self):
+        """
+        :return: Dictionary of `cls`'s attributes
+        """
+        return {k: v for k, v in self.__dict__.items() if not k.startswith('_')}
