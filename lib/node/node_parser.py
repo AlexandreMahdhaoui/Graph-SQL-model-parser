@@ -30,9 +30,9 @@ class NodeParser:
     def parse(cls, nodes, edges):
         """
         
-        :param nodes:
-        :param edges:
-        :return:
+        :param nodes: list from json.load(request-data.json)['nodes']
+        :param edges: list from json.load(request-data.json)['edges']
+        :return: parsed query
         """
         nodes = cls._refactor_nodes(nodes)
         input_keys = cls._get_inputs(nodes)

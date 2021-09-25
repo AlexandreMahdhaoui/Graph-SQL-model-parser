@@ -1,0 +1,39 @@
+{
+  "py_to_sql": {
+    "str": ["char", "varchar", "text", "nchar", "nvarchar", "ntext", "binary", "varbinary", "image"],
+    "int": ["bit", "tinyint", "smallint", "int", "bigint"],
+    "float": ["decimal", "numeric", "smallmoney", "money", "float", "real"],
+    "complex": [],
+    "memoryview": [],
+    "bytearray": [],
+    "bytes": [],
+    "frozenset": [],
+    "set": [],
+    "dict": [],
+    "range": [],
+    "tuple": [],
+    "list": []
+  },
+  "sql_to_py": {
+    "char": "str",
+    "varchar": "str",
+    "text":  "str",
+    "nchar": "str",
+    "nvarchar":  "str",
+    "ntext": "str",
+    "binary":  "str",
+    "varbinary": "str",
+    "image":  "str",
+    "bit": "int",
+    "int": "int",
+    "tinyint": "int",
+    "smallint": "int",
+    "bigint": "int",
+    "decimal":  "float",
+    "numeric": "float",
+    "smallmoney":  "float",
+    "money": "float",
+    "float":  "float",
+    "real": "float"
+  }
+}

@@ -7,27 +7,35 @@ Sharing knowledge is a mindset I truly cherish and my work at your company
 will always be documented and oriented to my coworkers.\
 I'm a team player!
 
-NB: From "nodes" and "edges" graph theory's keywords, I've guessed the 
+NB: From `nodes` and `edges` graph theory's keywords, I've guessed the 
 task might be part of a Graph Query backend engine.
 I designed this API to integrate a whole graph query environment.
 
 
 ## Architecture decision: 
 - ### Node types and Validation: 
-  - Each node gets validated from their respective node_types 
-  defined in node_types.json
-  - Extendability: LibApi.add_node_type() and LibApi.remove_node_type()
-    - Node types could be retrieved from a database.
+  - Each columns get validated within a `node` according to the 
+  `node_type` specification
+  - Extendability: 
+    - The `_get_types()` function in `/lib/node/node_parser.py`
+    fetches all `node_type` defined in the `/lib/node/types/` folder. \
+    - Therefore `node_types` are easily extendable: Just create a new class 
+    inheriting from `NodeType` and it will automatically be integrated.\
+    - Please make sure to provide the same name for the class and its file.
+    E.g.: `class TextTransformation(NodeType)` defined in `text_transformation.py` \
+    - Note that `_get_types()` will automatically understand that the snake
+    cased `text_transformation` refers to the pascal cased `TextTransformation`.
+      (Please respect snake and pascal casing when dealing with `node_types`).
 - ### Fields, Schemas and Validation:
   - The API access schema definitions through
   a subscriptable class provider.
   - Then schemas gets parsed to create validator. I designed the validation
   flow to be extendable.
-  - Extendability: this API allows adding and removing schemas LibApi.add_schema()
-  and LibApi.remove_schema()
+  - Extendability: this API allows adding and removing schemas `LibApi.add_schema()`
+  and `LibApi.remove_schema()`
     - It also allows extendability to retrieve schema definition from database
-    directly. At the moment, schemas are retrieved from a json file.
-
+    directly. At the moment, schemas are retrieved from a `.json` file.
+- Bonus Point: 'Suggestion on how to validate the columns used inside the nodes'
 
 
 ## ** ATTENTION **
