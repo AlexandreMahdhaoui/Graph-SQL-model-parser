@@ -10,34 +10,74 @@ I'm a team player!
 
 ## Architecture decision: 
 - ### Node parsing flow:
+  - First step: parsing `INPUT` nodes:
+    - Get `key`s of all nodes of type `INPUT`
+    - Get `tableName`s and retrieve their schemas with the help of the \
+    `class Schema(Subscriptable, metaclass=Singleton)`.
+    Then parse those schemas into `origin_schema`s.
+    - Compute all nodes `current_schemas` for further nodes
+    and return their parsed SQL queries.
+  - Compute `edge defined` nodes:
+    - following the list of `edges` we compute each node and
+    validation with the help of pre-computed `origin_schema`s. 
+    - Returns parsed queries.
+  - Join all parsed queries and return the `result.sql`
 - ### Node types and Validation: 
   - Each columns get validated within a `node` according to the 
   `node_type` specification
   - Extendability: 
     - The `_get_types()` function in `/lib/node/node_parser.py`
-    fetches all `node_type` defined in the `/lib/node/types/` folder. \
+    fetches all `node_type` defined in the `/lib/node/types/` folder.
     - Therefore `node_types` are easily extendable: Just create a new class 
-    inheriting from `NodeType` and it will automatically be integrated.\
-    - Please make sure to provide the same name for the class and its file.
-    E.g.: `class TextTransformation(NodeType)` defined in `text_transformation.py` \
-    - Note that `_get_types()` will automatically understand that the snake
-    cased `text_transformation` refers to the pascal cased `TextTransformation`.
+    inheriting from `NodeType` and it will automatically be integrated.
+    - Please make sure to provide the same name for the class and its file !\
+    E.g.: `class TextTransformation(NodeType)` defined in 
+    `text_transformation.py`.
+    - Note that `_get_types()` will understand the snake cased file
+    `text_transformation` refers to the pascal cased class `TextTransformation`.
       (Please respect snake and pascal casing when dealing with `node_types`).
 - ### Fields, Schemas and Validation:
   - The API access schema definitions through a `subscriptable class` provider.
-  - SQL schema definitions get parsed and thus are ready for validation.
+  - SQL schema definitions get parsed and thus, are ready for validation.
   - `class SchemaValidator` and `class TypingValidator` are helper class used
   during `node parsing` to ensure 
-  - During `node parsing`, a schema of the current outputed data structure
-  gets computed and will be used to validate further parsing stages.
+  - During `node parsing`, a schema of the `current_node` data structure
+  gets computed from the `origin_schema` and will be used to validate 
+  further parsing stages.
   - Extendability: this API allows adding and removing schemas `LibApi.add_schema()`
   and `LibApi.remove_schema()`
-    - It also allows extendability to retrieve schema definition from database
+    - It will also allow extendability to retrieve schema definition from database
     directly. At the moment, schemas are retrieved from a `.json` file.
+- ### Bonus Point: 'Extendable structure which allows to add more types easily in the future.'
+  - We discussed a bit about it, but let's discuss how the current
+  structure allows extendability.
+  - 
+  - More complex queries: The current `A -> B -> C -> D -> E` flow 
+  of example is quite "simple". \
+  The way I designed the parsing stages allow us to create a `concatenate`\
+  node-type, allowing us to compute parallel and complex SQL queries
+  with several input nodes.
+  - Adding more node-types:
+    - Create a `new_nodetype.py` file in `lib/node/types/`
+    - In this file: create a `NewNodetype` class implementing 
+    the `NodeType` class.
 - ### Bonus Point: 'Suggestion on how to validate the columns used inside the nodes'
-  - More than a suggestion I took the initiative to code a validation 
-  flow for columns
-
+  - Allowed schema validation by parsing SQL schemas, stored in 
+  `lib/data/schema_definitions.json` at the moment.
+  - Allowed validation during a `NodeType` parsing stage using the 
+  `.validate()` method.
+  - Also, we ensure in `NodeParser` only fields described 
+  in the `origin_schema` of the `current_node` can be selected to prevent
+  errors.
+- ### Bonus Point: 'Optimize `request-data.json` json structure/schema.'
+  - One change of structure I deemed mandatory is the `variable_field_name`
+  of `transformObject` in the `FILTER` node-type. \
+  Changed to `var_fields` and made it a `list` of `string`, even if only
+  one field is selected.\
+  Usage:`for f, o in  zip(var_fields, operations)`
+    - `len(var_fields)` will be equal to `len(operations)`. For each
+    element of `var_fields`, we will apply the corresponding operation
+    described in `operations`.
 
 NB: From `nodes` and `edges` graph theory's keywords, I've guessed the 
 task might be part of a Graph Query backend engine.

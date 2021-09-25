@@ -16,6 +16,12 @@ class Schema(Subscriptable, metaclass=Singleton):
         for k, v in data.items():
             self.__setattr__(k, self._parse_schema(v))
 
+    def get_table_name(self, schema) -> str:
+        pattern = self._pattern.format('CREATE TABLE `', '`')
+        match = re.search(pattern, schema)
+        if match:
+            return match.group()
+
     def _parse_schema(self, schema: str):
         lines = schema.split('\n')
         i, table_name = self._get_table_name(lines)

@@ -16,7 +16,7 @@
             "key": "B",
             "type": "FILTER",
             "transformObject": {
-                "variable_field_name": "age",
+                "var_fields": ["age"],
                 "joinOperator": "AND",
                 "operations": [
                     {

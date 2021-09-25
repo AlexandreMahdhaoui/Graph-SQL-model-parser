@@ -8,7 +8,7 @@ class SelectParser:
     kw = ["SELECT", "FROM"]
 
     @classmethod
-    def parse(cls, fields: FieldsType, origin: str):
+    def parse(cls, origin: str, fields: FieldsType):
         return " ".join([
             cls.kw[0],
             cls._parse_fields(fields),
