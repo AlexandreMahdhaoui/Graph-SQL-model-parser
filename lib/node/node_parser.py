@@ -2,15 +2,28 @@ from lib.schema.schema import Schema
 
 
 def _get_types() -> dict:
+    import os
+    import importlib
+    from lib.utils.string_converter import StringConverter as sc
     """
-    inspect `/lib/node/types`, get all classes and return a dictionary
+    Function `_get_types()` returns all class types stored in `/lib/node/types`
+    The class describing the `node_type` must have the same name as its `.py` file.
+    
+    !! PLEASE NAME THE FILE AND THE CLASS RESPECTIVELY IN SNAKE AND PASCAL CASE !! 
+    
     :return: dict
     """
-    pass
+    type_dict = dict()
+    type_list = [x.name.replace('.py', '')
+                 for x in os.scandir(os.path.join('lib', 'node', 'types'))
+                 if not x.name.startswith('_')]
+    for t in type_list:
+        type_dict[t] = importlib.import_module('lib.node.types.{}'.format(t)).__dict__.get('{}'.format(sc.snake_to_pascal(t)))
+    return type_dict
 
 
 class NodeParser:
-    types: dict = _get_types()
+    type_dict: dict = _get_types()
     schema = Schema()
 
     @classmethod
@@ -42,7 +55,7 @@ class NodeParser:
             is_output=False
     ):
         node_type = node_dict.get('type')
-        node_class = cls.types.get(node_type)
+        node_class = cls.type_dict.get(node_type)
         schema, parsed = node_class.parsed(origin_node=origin_node,
                                            origin_schema=origin_schema,
                                            **node_dict)
