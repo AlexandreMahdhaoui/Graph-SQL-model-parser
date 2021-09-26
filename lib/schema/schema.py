@@ -6,6 +6,7 @@ from lib.utils.singleton import Singleton
 
 
 class Schema(metaclass=Singleton):
+    _path = os.path.join('lib', 'data', 'schema_definitions.json')
     _pattern = '(?<=({})).+?(?={})'
     _type_converter = {
         'str': str,
@@ -16,12 +17,37 @@ class Schema(metaclass=Singleton):
 
     def __init__(self):
         self._get_typing_ref()
-        with open(os.path.join('lib', 'data', 'schema_definitions.json')) as f:
-            data = json.load(f)
+        data = self._load()
         for k, v in data.items():
             self.__setattr__(k, self._parse_schema(v))
 
-    def get_table_name(self, schema) -> str:
+    def get(self, item: str, default=None):
+        return self._dict().get(item, default=default)
+
+    def set(self, schema):
+        data = self._load()
+        table_name = self._get_table_name(schema)
+        data[table_name] = schema
+        self.__setattr__(table_name, self._parse_schema(schema))
+        self._dump_and_save(data)
+        return table_name
+
+    def rm(self, schema_name):
+        data = self._load()
+        if data.pop(schema_name):
+            self._dump_and_save(data)
+            return schema_name
+
+    def _load(self):
+        with open(self._path) as f:
+            return json.load(f)
+
+    def _dump_and_save(self, dict_: dict):
+        self._check_type(dict_, dict, 'dict_')
+        with open(self._path, 'w') as f:
+            json.dump(dict_, f)
+
+    def _get_table_name(self, schema) -> str:
         pattern = self._pattern.format('CREATE TABLE `', '`')
         match = re.search(pattern, schema)
         if not match:
@@ -63,11 +89,13 @@ class Schema(metaclass=Singleton):
     def __getitem__(self, item: str):
         return self._dict()[item]
 
-    def get(self, item: str, default=None):
-        return self._dict().get(item, default=default)
-
     def _dict(self):
         """
         :return: Dictionary of `cls`'s attributes
         """
         return {k: v for k, v in self.__dict__.items() if not k.startswith('_')}
+
+    @classmethod
+    def _check_type(cls, obj: object, class_, name: str):
+        if not isinstance(obj, class_):
+            raise TypeError('Type of `{}` must be `{}`, received `{}` instead'.format(name, class_, type(obj)))

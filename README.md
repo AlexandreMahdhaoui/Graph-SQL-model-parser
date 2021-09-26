@@ -7,6 +7,48 @@ Sharing knowledge is a mindset I truly cherish and my work at your company
 will always be documented and oriented to my coworkers.\
 I'm a team player!
 
+## Usage:
+- #### Parse `request-data` into `result.sql`:
+  - ###### Parsing a `.json` file:
+      ```python
+      parsed_query = LibApi.parse('/data/request-data.json', from_path=True)
+      ```
+  - ###### Parsing a python dictionary:
+    ```python
+    query = json.load(json_query)
+    parsed_query = LibApi.parse(query)
+    ```
+
+  - ###### Parsing a raw json query:
+    ```python
+    parsed_query = LibApi.parse(json_query, is_json=True)
+    ```
+  - #### Adding new `NodeType`s:
+    ```python
+    # in `/lib/data/types`, create new file called `new_type.py`
+    # Please respect snake_case for file name and PascalCase for class name.
+    class NewType(NodeType):
+        @classmethod
+        def resolve(cls, transform_object, __origin_schema__, *args, **kwargs) -> str:
+            return 'SELECT * FROM `{}`'.format(transform_object['tableName'])
+    ```
+- #### Adding/Removing SQL Schema:
+    ```python
+    >>> sql_schema = """CREATE TABLE `cheese` (
+        `id`	int(11) NOT NULL,
+        `name`	varchar(50) NOT NULL,
+        `price`	float(11) DEFAULT NULL,
+        PRIMARY KEY (`id`)
+        )"""
+    >>> LibApi.add_schema(sql_schema)
+    Schema `cheese` has been added succesfully.
+    >>> LibApi.remove_schema('cheese')
+    Schema `cheese` has been deleted succesfully.
+    ```
+    NB: SQL schemas get parsed to retrieve their fields and types.
+    SQL types get converted to python types to provide validation.
+
+  
 
 ## Architecture decision: 
 - ### Node parsing flow:
