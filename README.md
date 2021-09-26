@@ -100,7 +100,7 @@ I'm a team player!
   with several input nodes.
   - Adding more node-types:
     - NodeParser, with `_get_types()`, loads all NodeType classes by inspecting
-    the `/lib/node/types` directory. That's why respecting the naming/casing
+    the `/lib/node/types` directory. That's why respecting the name and case
     specification is important.
     - Create `weirdname_new_node.py` file in `/lib/node/types` and
     define the `WeirdnameNewNode` class implementing 
