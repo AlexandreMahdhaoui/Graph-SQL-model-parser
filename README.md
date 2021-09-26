@@ -14,10 +14,8 @@ I'm a team player!
       ```
   - ###### Parsing a python dictionary:
     ```python
-    query = json.load(json_query)
     parsed_query = LibApi.parse(query)
     ```
-
   - ###### Parsing a raw json query:
     ```python
     parsed_query = LibApi.parse(json_query, is_json=True)
