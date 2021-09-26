@@ -91,7 +91,8 @@ I'm a team player!
 - ### Bonus Point: 'Extendable structure which allows to add more types easily in the future.'
   - We discussed a bit about it, but let's discuss how the current
   structure allows extendability.
-  - 
+  - `NodeType` superclass provides documented functions for flawless integration
+  of new node-types.
   - More complex queries: The current `A -> B -> C -> D -> E` flow 
   of example is quite "simple". \
   The way I designed the parsing stages allow us to create a `concatenate`\
