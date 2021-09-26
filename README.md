@@ -1,7 +1,6 @@
 # Alexandre Mahdhaoui's Solution:
 Please note my dedication at providing clean, documented, 
-maintainable and object oriented code designed as a library API
-with unit testing.
+maintainable and object oriented code designed as a library API.
 
 Sharing knowledge is a mindset I truly cherish and my work at your company
 will always be documented and oriented to my coworkers.\
@@ -23,15 +22,15 @@ I'm a team player!
     ```python
     parsed_query = LibApi.parse(json_query, is_json=True)
     ```
-  - #### Adding new `NodeType`s:
-    ```python
-    # in `/lib/data/types`, create new file called `new_type.py`
-    # Please respect snake_case for file name and PascalCase for class name.
-    class NewType(NodeType):
-        @classmethod
-        def resolve(cls, transform_object, __origin_schema__, *args, **kwargs) -> str:
-            return 'SELECT * FROM `{}`'.format(transform_object['tableName'])
-    ```
+- #### Adding new `NodeType`s:
+  ```python
+  # in `/lib/data/types`, create new file called `new_type.py`
+  # Please respect snake_case for file name and PascalCase for class name.
+  class NewType(NodeType):
+      @classmethod
+      def resolve(cls, transform_object, __origin_schema__, *args, **kwargs) -> str:
+          return 'SELECT * FROM `{}`'.format(transform_object['tableName'])
+  ```
 - #### Adding/Removing SQL Schema:
     ```python
     >>> sql_schema = """CREATE TABLE `cheese` (
@@ -79,10 +78,9 @@ I'm a team player!
     `text_transformation` refers to the pascal cased class `TextTransformation`.
       (Please respect snake and pascal casing when dealing with `node_types`).
 - ### Fields, Schemas and Validation:
-  - The API access schema definitions through a `subscriptable class` provider.
+  - The API access schema definitions through a `subscriptable` class 
+  provider called `Schema`, localized in `/lib/schema/schema.py`.
   - SQL schema definitions get parsed and thus, are ready for validation.
-  - `class SchemaValidator` and `class TypingValidator` are helper class used
-  during `node parsing` to ensure 
   - During `node parsing`, a schema of the `current_node` data structure
   gets computed from the `origin_schema` and will be used to validate 
   further parsing stages.
@@ -124,7 +122,6 @@ I'm a team player!
 
 NB: From `nodes` and `edges` graph theory's keywords, I've guessed the 
 task might be part of a Graph Query backend engine.
-I designed this API to be integrable in a whole graph query environment.
 
 ___
 
