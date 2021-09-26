@@ -99,8 +99,11 @@ I'm a team player!
   node-type, allowing us to compute parallel and complex SQL queries
   with several input nodes.
   - Adding more node-types:
-    - Create a `new_nodetype.py` file in `lib/node/types/`
-    - In this file: create a `NewNodetype` class implementing 
+    - NodeParser, with `_get_types()`, loads all NodeType classes by inspecting
+    the `/lib/node/types` directory. That's why respecting the naming/casing
+    specification is important.
+    - Create `weirdname_new_node.py` file in `/lib/node/types` and
+    define the `WeirdnameNewNode` class implementing 
     the `NodeType` class.
 - ### Bonus Point: 'Suggestion on how to validate the columns used inside the nodes'
   - Allowed schema validation by parsing SQL schemas, stored in 
