@@ -1,11 +1,12 @@
 import os
 from lib.lib_api import LibApi
+from lib.schema.schema import Schema
 from util import get_data
 
 cheese = """CREATE TABLE `cheese` (
   `id`		int(11) NOT NULL,
   `name`	varchar(50) NOT NULL,
-  `price`	float(11) DEFAULT NULL,
+  `price`	float DEFAULT NULL,
   PRIMARY KEY (`id`)
 )"""
 
@@ -23,4 +24,5 @@ if __name__ == '__main__':
 
     # Adding/removing new Schemas
     LibApi.add_schema(cheese)
+    print(Schema()['cheese'])
     LibApi.remove_schema('cheese')
