@@ -1,4 +1,3 @@
-import os
 from lib.lib_api import LibApi
 from lib.schema.schema import Schema
 from util import get_data
@@ -12,8 +11,6 @@ cheese = """CREATE TABLE `cheese` (
 
 if __name__ == '__main__':
     query, schema, results = get_data()
-    # Unit Testing the "lib" library
-    # NOT ATM os.system('python -m pytest')
 
     # Testing if "LibApi" expectedly resolve the task
     solution = LibApi.parse(query)
