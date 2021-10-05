@@ -1,4 +1,4 @@
-# Alexandre Mahdhaoui's Solution:
+# Solution:
 Please note my dedication at providing clean, documented, 
 maintainable and object oriented code designed as a library API.
 
@@ -127,8 +127,6 @@ task might be part of a Graph Query backend engine.
 
 ___
 
-#### ** ATTENTION ** Please do not publicly fork this repository.
-
 ### Task
 
 - Parse `request-data.json` into the query similar to `result.sql`. 
@@ -143,7 +141,7 @@ There are 5 different types of nodes used in this request
 	- OUTPUT	-> contains SQL "limit" settings
 
 Graphical representation of actual use-case:
-![graphical representation](https://github.com/goes-funky/modeling-test/blob/master/graphical-representation.png?raw=true)
+![graphical representation](https://github.com/AlexandreMahdhaoui/Graph-SQL-model-parser/blob/master/graphical-representation.png?raw=true)
 
 Use your imagination to fill in the missing information however you like to achieve the result.
 
