@@ -141,7 +141,7 @@ There are 5 different types of nodes used in this request
 	- OUTPUT	-> contains SQL "limit" settings
 
 Graphical representation of actual use-case:
-![graphical representation](https://github.com/AlexandreMahdhaoui/Graph-SQL-model-parser/blob/master/graphical-representation.png?raw=true)
+![graphical representation](https://github.com/AlexandreMahdhaoui/Graph-SQL-model-parser/blob/master/data/graphical-representation.png?raw=true)
 
 Use your imagination to fill in the missing information however you like to achieve the result.
 
